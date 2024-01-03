@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+.row{
+  height: 30px;
+  display: flex;
+}
+.cell{
+  width: 30px;
+  height: 30px;
+  border: 1px solid #eee;
+}
+.circle{
+  width: 26px;
+  height: 26px;
+  border-radius: 30px;
+  margin-left: 2px;
+  margin-top: 2px;
+  background: #000;
+}
