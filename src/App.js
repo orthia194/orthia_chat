@@ -1,11 +1,22 @@
 import './App.css';
-import Fivemok from './omok';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './AuthProvider';
+import Omok from './omok';
+import SignUp from './SignUp';
+import Login from './login';
 
 function App() {
   return (
     <div className="App">
-      <h1>오르티아 오목</h1>
-      <Fivemok />
+      <AuthProvider>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+          <Route exact path="/signup" element={<SignUp />} />
+          <Route exact path="/omok" element={<Omok />} />
+        </Routes>
+      </Router>
+      </AuthProvider>
     </div>
   );
 }

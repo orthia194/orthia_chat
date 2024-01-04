@@ -1,19 +1,19 @@
-// server.js
-
 const express = require('express');
 const mysql = require('mysql');
+const cors = require('cors'); // CORS 미들웨어 추가
 
 const app = express();
 
-// MySQL 연결 설정
+app.use(express.json());
+app.use(cors()); // 모든 origin에 대해 CORS 허용
+
 const connection = mysql.createConnection({
-  host: '172.27.0.249', // 데이터베이스 호스트 주소
-  user: 'orthia', // MySQL 사용자명
-  password: 'vjswl1', // MySQL 비밀번호
-  database: 'orthia_omok_db' // 사용할 데이터베이스 이름
+  host: '172.27.0.249',
+  user: 'orthia',
+  password: 'vjswl1',
+  database: 'orthia_omok_db'
 });
 
-// MySQL 연결
 connection.connect((err) => {
   if (err) {
     console.error('MySQL 연결 오류:', err);
@@ -22,20 +22,40 @@ connection.connect((err) => {
   }
 });
 
-// 예시: 사용자 테이블에서 데이터 가져오기
-app.get('/users', (req, res) => {
-  connection.query('SELECT * FROM users', (err, rows) => {
-    if (err) {
-      console.error('쿼리 오류:', err);
+app.post('/signup', (req, res) => {
+  const { username, password, nickname } = req.body;
+
+  const query = 'INSERT INTO orthia_omok (username, password, nickname) VALUES (?, ?, ?)';
+  connection.query(query, [username, password, nickname], (error, results) => {
+    if (error) {
+      console.error('쿼리 오류:', error);
       res.status(500).send('서버 오류');
     } else {
-      res.json(rows); // 받아온 데이터를 JSON 형태로 응답
+      res.status(201).json({ message: '회원가입이 완료되었습니다.' });
     }
   });
 });
 
-// 서버 시작
-const port = 3010; // 포트번호 설정
+app.post('/checkUsername', (req, res) => {
+  const { username } = req.body;
+
+  const query = 'SELECT COUNT(*) AS count FROM orthia_omok WHERE username = ?';
+  connection.query(query, [username], (error, results) => {
+    if (error) {
+      console.error('쿼리 오류:', error);
+      res.status(500).send('서버 오류');
+    } else {
+      const count = results[0].count;
+      if (count > 0) {
+        res.status(400).json({ message: '중복된 아이디입니다.' });
+      } else {
+        res.status(200).json({ message: '사용 가능한 아이디입니다.' });
+      }
+    }
+  });
+});
+
+const port = 3010;
 app.listen(port, () => {
   console.log(`서버가 포트 ${port}에서 실행 중입니다.`);
 });
