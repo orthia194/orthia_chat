@@ -111,6 +111,7 @@ const SignUp = () => {
 
       const data = await response.json();
       console.log(data);
+      window.location.href = 'http://211.253.28.24:3000/';
     } catch (error) {
       console.error('Fetch Error:', error.message);
     }

@@ -30,8 +30,9 @@ const Login = () => {
 
       // 로그인 성공 시, 다음 단계로 이동
       // 예를 들어, 성공 시 다른 페이지로 이동하는 등의 로직을 추가할 수 있습니다.
-      // const data = await response.json();
-      // console.log(data);
+      const data = await response.json();
+      console.log(data);
+      window.location.href = 'http://211.253.28.24:3000/omoksRoom';
     } catch (error) {
       console.error('로그인 에러:', error.message);
       setLoginError('아이디 또는 비밀번호가 올바르지 않습니다.');
