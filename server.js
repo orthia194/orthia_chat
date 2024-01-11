@@ -11,7 +11,7 @@ app.use(cors());
 const connection = mysql.createConnection({
   host: '172.27.0.249',
   user: 'orthia',
-  password: 'vjswl1',
+  password: '',
   database: 'orthia_omok_db'
 });
 
